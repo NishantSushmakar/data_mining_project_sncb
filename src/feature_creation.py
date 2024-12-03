@@ -10,7 +10,8 @@ import config
 import numpy as np
 import os
 import joblib
-
+from sklearn.preprocessing import StandardScaler
+from sklearn.ensemble import IsolationForest
 
 class DropRowsByLength(BaseEstimator, TransformerMixin):
     def __init__(self):
@@ -354,7 +355,7 @@ class SpeedsFreq(BaseEstimator, TransformerMixin):
         X[["unique_speed_list","unique_time_list"]] = X[['sequence_dict','start_time','end_time']].apply(lambda row: self.form_speed_lst(row['sequence_dict'],row['start_time'],row['end_time']),axis=1).apply(pd.Series)
         X[['frequency_train_kph_acceleration','frequency_train_kph_deceleration','frequency_train_kph_constant']]=X['unique_speed_list'].apply(self.get_count).apply(pd.Series)
         X["max_acceleration_and_deceleration"] = X['unique_speed_list'].apply(lambda x:self.get_acc(x))
-        X[["freq_tensec_acc","freq_tensec_dcc","freq_tensec_constant"]] = X[['unique_speed_list','unique_time_list']].apply(lambda row:self.get_count_n_seconds_window(row["unique_speed_list"],10,row["unique_time_list"]),axis=1).apply(pd.Series) 
+        X[["freq_tensec_acc","freq_tensec_dcc","freq_tensec_constant"]] = X[['unique_speed_list','unique_time_list']].apply(lambda row:self.get_count_n_seconds_window(row["unique_speed_list"],50,row["unique_time_list"]),axis=1).apply(pd.Series) 
 
         X.drop(columns=["start_time","end_time","unique_speed_list","unique_time_list"],inplace=True)
         X.drop(columns=config.COL_TO_DROP,inplace=True)
@@ -369,15 +370,41 @@ class SpeedsFreq(BaseEstimator, TransformerMixin):
         return self.process_data(X)
 
 
+class AnomalyFeat(BaseEstimator,TransformerMixin):
+
+    def __init___(self):
+        return self
+    
+    def fit(self,X,y=None):
+        return self
+    
+    def fit_transform(self,X,y=None):
+        
+        clf = IsolationForest(random_state=42)
+        y_pred = clf.fit_predict(X)
+        X['anomaly_detection_feat'] = (y_pred == -1).astype(int)
+        
+        joblib.dump(clf,config.ANOMALY_MODEL_PATH)
+        return X 
+
+    def transform(self,X,y=None):
+
+        clf = joblib.load(config.ANOMALY_MODEL_PATH)
+        y_pred = clf.predict(X)
+        X['anomaly_detection_feat'] = (y_pred == -1).astype(int)
+
+        return X
+
 feature_pipeline = Pipeline(steps=[
         ("drop_empty_rows",DropRowsByLength()),
         ("sequence_stats",UniqueAndHighestFrequencyPercentageSequences()),
         ("sequence_mean_and_median_speed",CalculateMeanMedianSpeed()),
         ("energy_state_combination",StatesCombinationCounter()),
-        ("tfidf_features",EventSequenceNGrams()),
+        ("tfidf_features",EventSequenceNGrams(max_ngram=3)),
         ("mean_median_between_seconds",MeanMedianDiffTransformer()),
         ("incident_category",IncidentCategory()),
         ("speed_freq",SpeedsFreq())
+
   ])
 
 

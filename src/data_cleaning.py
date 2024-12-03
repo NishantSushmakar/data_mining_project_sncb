@@ -6,7 +6,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.impute import KNNImputer
 import config
 import os
-
+import numpy as np
 
 def make_dict(row):
     data = dict()
@@ -50,6 +50,8 @@ def make_dict(row):
             print("problem")
     return data
 
+
+
 class ConvertSequencesToLists(BaseEstimator, TransformerMixin):
     
     def __init__(self, sequence_columns):
@@ -75,6 +77,127 @@ class ConvertSequencesToLists(BaseEstimator, TransformerMixin):
         
         return self.process_data(X)
     
+
+class RemoveNoise(BaseEstimator,TransformerMixin):
+
+    def __init__(self):
+        self.frequency_dict = {}
+        self.classes_frequency_dict = {}
+        self.r_event_dict = {}
+        
+    
+    def fit(self,X,y=None):
+        return self
+    
+    def get_frequency_dict(self,X):
+        
+        lst_event_sequence = X['events_sequence'].tolist()
+
+        frequency_dict = {}
+
+        for lst in lst_event_sequence:
+
+            for event_id in lst: 
+                if event_id not in frequency_dict.keys():
+                    frequency_dict[event_id] = 1
+                else:
+                    frequency_dict[event_id] += 1
+
+
+        return frequency_dict
+    
+
+    def get_classes_frequency_dict(self,X):
+
+        classes_frequency_dict = {}
+
+        for incident_type in list(X['incident_type'].value_counts().keys()): 
+
+            sub_lst_event_sequence = X[X['incident_type']==incident_type]['events_sequence'].tolist()   
+
+            if incident_type not in classes_frequency_dict.keys():
+                classes_frequency_dict[incident_type] = {}
+            
+            for lst in sub_lst_event_sequence:
+                for event_id in lst: 
+                    if event_id not in classes_frequency_dict[incident_type].keys():
+                        classes_frequency_dict[incident_type][event_id] = 1
+                    else:
+                        classes_frequency_dict[incident_type][event_id] += 1
+
+
+        return classes_frequency_dict
+    
+
+    def get_relevance(self):
+
+        r_event_dict = {}
+
+        for key, nested_dict in self.classes_frequency_dict.items():
+
+            if key not in r_event_dict.keys():
+                r_event_dict[key] = {}
+
+            for event_id, value in nested_dict.items():
+                r_event_dict[key][event_id] = value/self.frequency_dict[event_id]
+
+        return r_event_dict
+    
+
+    def get_index_to_drop(self,x,incident_type,threshold=0.1):
+        index_lst = []
+
+        for i,value in enumerate(x):
+            
+            if value in self.r_event_dict[incident_type].keys():
+                if self.r_event_dict[incident_type][value] > threshold:
+                    index_lst.append(i)
+
+
+        return index_lst
+    
+    def get_selected_data(seld,selected_index_lst,col_lst):
+
+        if len(selected_index_lst)==0:
+            return np.nan
+        
+        new_lst = [col_lst[i] for i in selected_index_lst]
+
+        return new_lst
+    
+
+    
+    def fit_transform(self,X,y=None):
+
+        self.frequency_dict = self.get_frequency_dict(X)
+        self.classes_frequency_dict = self.get_classes_frequency_dict(X)
+        self.r_event_dict = self.get_relevance()
+
+        joblib.dump(self.r_event_dict,config.R_EVENT_DICT_PATH)
+
+        X['index_to_select'] = X[['incident_type','events_sequence']].apply(lambda row:self.get_index_to_drop(row['events_sequence'],row['incident_type']),axis=1)
+        for col in config.SEQUENCE_COLUMNS:
+            X[f'{col}'] = X[[col,'index_to_select']].apply(lambda row:self.get_selected_data(row['index_to_select'],row[col]),axis=1)
+
+
+
+        X = X.dropna().reset_index(drop=True)
+        X = X.drop(columns =['index_to_select'])
+
+        return X 
+    
+    def transform(self,X,y=None):
+        self.r_event_dict = joblib.load(config.R_EVENT_DICT_PATH)
+
+        X['index_to_select'] = X[['incident_type','events_sequence']].apply(lambda row:self.get_index_to_drop(row['events_sequence'],row['incident_type']),axis=1)
+        for col in config.SEQUENCE_COLUMNS:
+            X[f'{col}'] = X[[col,'index_to_select']].apply(lambda row:self.get_selected_data(row['index_to_select'],row[col]),axis=1)
+    
+
+        X = X.dropna().reset_index(drop=True)
+        X = X.drop(columns =['index_to_select'])
+
+        return X 
 
 class OutlierImputer(BaseEstimator, TransformerMixin):
 
@@ -132,10 +255,14 @@ class AddIndexSequence(BaseEstimator, TransformerMixin):
         pass
 
     def get_idx(self, ls):
+
+        return_idx = len(ls)-1
+           
         for idx in range(0, len(ls) - 1):
-            if int(ls[idx + 1]) > 0:
+            if (int(ls[idx + 1]) > 0):
                 return idx
-        return idx + 1
+            
+        return return_idx
 
     def process_data(self, X):
         X["index_sequence"] = X["seconds_to_incident_sequence"].apply(self.get_idx)
@@ -149,6 +276,57 @@ class AddIndexSequence(BaseEstimator, TransformerMixin):
 
     def transform(self, X, y=None):
         return self.process_data(X)
+
+class AddWindowIndicesModified(BaseEstimator, TransformerMixin):
+    def __init__(self, window_start=-3600, window_end=0):
+        self.window_start = window_start
+        self.window_end = window_end
+
+    def find_range_indexes(self,numbers, start_integer, end_integer):
+        
+        # Find the first valid index
+        start_index = None
+        for i in range(len(numbers)):
+            if start_integer <= numbers[i] <= end_integer:
+                start_index = i
+                break
+        
+        # If no start index found, return None
+        if start_index is None:
+            return np.nan,np.nan
+        
+        # Find the last valid index
+        end_index = start_index
+        for j in range(start_index, len(numbers)):
+            if start_integer <= numbers[j] <= end_integer:
+                end_index = j
+            else:
+                break
+        
+        return int(start_index), int(end_index)
+
+    def process_data(self, X):
+        
+        X[["window_min_idx", "window_max_idx"]] = X["seconds_to_incident_sequence"].apply(
+            lambda x: self.find_range_indexes(x,self.window_start,self.window_end)
+        ).apply(pd.Series)
+
+
+        X = X.dropna(subset=["window_min_idx"]).reset_index(drop=True)
+
+        return X
+    
+    def fit(self, X, y=None):
+        return self
+
+    def fit_transform(self, X, y=None):
+        return self.process_data(X)
+
+    def transform(self, X, y=None):
+        return self.process_data(X)
+
+
+
 
 class AddWindowIndices(BaseEstimator, TransformerMixin):
     def __init__(self, window_start=3600, window_end=600):
@@ -193,8 +371,9 @@ class AddWindowedSequences(BaseEstimator, TransformerMixin):
         self.columns = columns
 
     def get_data_sequence_within_windows(self, row, column):
-        min_idx = row["window_min_idx"]
-        max_idx = row["window_max_idx"]
+        
+        min_idx = int(row["window_min_idx"])
+        max_idx = int(row["window_max_idx"])
         return row[column][min_idx : max_idx + 1]
 
     def process_data(self, X):
@@ -202,12 +381,14 @@ class AddWindowedSequences(BaseEstimator, TransformerMixin):
             X[f"window_{col}"] = X.apply(
                 lambda row: self.get_data_sequence_within_windows(row, col), axis=1
             )
+            
         return X
     
     def fit(self, X, y=None):
         return self
 
     def fit_transform(self, X, y=None):
+        
         return self.process_data(X)
 
     def transform(self, X, y=None):
@@ -217,9 +398,10 @@ class AddWindowedSequences(BaseEstimator, TransformerMixin):
 
 data_cleaning_pipeline = Pipeline(steps=[
                    ("convert_sequences", ConvertSequencesToLists(sequence_columns=config.SEQUENCE_COLUMNS)),
+                   ("remove_noise",RemoveNoise()),
                    ("impute_outlier",OutlierImputer(lat_extreme=[49.5072, 51.4978], lon_extreme=[2.5833, 6.3667], n_neighbors=2)),
                    ("find_index",AddIndexSequence()),
-                   ("find_window_index",AddWindowIndices(window_start=14400, window_end=600)),
+                   ("find_window_index",AddWindowIndices(window_start=3600, window_end=200)),
                    ("windowed_sequences_creation",AddWindowedSequences(columns=config.SEQUENCE_COLUMNS))
     ])
 

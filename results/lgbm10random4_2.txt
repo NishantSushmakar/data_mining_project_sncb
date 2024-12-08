@@ -1,0 +1,47 @@
+Fold0
+Train F1 Score:1.0, Train Precision:1.0, Train Recall: 1.0
+Validation F1 Score:0.30420838420838414, Validation Precision:0.32114624505928846, Validation Recall: 0.3165528711484594
+**************************************************
+Fold1
+Train F1 Score:1.0, Train Precision:1.0, Train Recall: 1.0
+Validation F1 Score:0.309086458260818, Validation Precision:0.3147428993770457, Validation Recall: 0.3082936507936508
+**************************************************
+Fold2
+Train F1 Score:1.0, Train Precision:1.0, Train Recall: 1.0
+Validation F1 Score:0.3136138396487234, Validation Precision:0.3209172494172494, Validation Recall: 0.31533459595959595
+**************************************************
+Fold3
+Train F1 Score:1.0, Train Precision:1.0, Train Recall: 1.0
+Validation F1 Score:0.2662518050189283, Validation Precision:0.2598507725336993, Validation Recall: 0.280385101010101
+**************************************************
+Fold4
+Train F1 Score:1.0, Train Precision:1.0, Train Recall: 1.0
+Validation F1 Score:0.31011927582844867, Validation Precision:0.3207658425689116, Validation Recall: 0.30657828282828287
+**************************************************
+Fold5
+Train F1 Score:1.0, Train Precision:1.0, Train Recall: 1.0
+Validation F1 Score:0.31816859512937945, Validation Precision:0.32987053795877325, Validation Recall: 0.31842320261437906
+**************************************************
+Fold6
+Train F1 Score:1.0, Train Precision:1.0, Train Recall: 1.0
+Validation F1 Score:0.2944658944658945, Validation Precision:0.30209401709401706, Validation Recall: 0.2941310160427807
+**************************************************
+Fold7
+Train F1 Score:1.0, Train Precision:1.0, Train Recall: 1.0
+Validation F1 Score:0.30670746247216835, Validation Precision:0.30457714799820057, Validation Recall: 0.3170693277310924
+**************************************************
+Fold8
+Train F1 Score:1.0, Train Precision:1.0, Train Recall: 1.0
+Validation F1 Score:0.27637390153519187, Validation Precision:0.2660049019607843, Validation Recall: 0.2902624920936116
+**************************************************
+Fold9
+Train F1 Score:1.0, Train Precision:1.0, Train Recall: 1.0
+Validation F1 Score:0.28197467030234435, Validation Precision:0.30079703832752613, Validation Recall: 0.2810863377609108
+**************************************************
+*************** Final Summary ***************
+average training precision:1.0
+average training recall:1.0
+average training f1:1.0
+average validation precision:0.30407666522954957
+average validation recall:0.3028116877982865
+average validation f1:0.2980970286870281

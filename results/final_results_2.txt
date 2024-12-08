@@ -1,0 +1,135 @@
+(1011, 11)
+Fold0
+-3600 - 200
+-7400 - -3600
+-11200 - -7400
+-3600 - 200
+-7400 - -3600
+-11200 - -7400
+(256, 19407) (94, 19407)
+Unique Labels Training: 7
+Unique Labels Training Values [ 2 13  9 14  4 99 11]
+Unique Labels Validation: 8
+Unique Labels Validation Values [ 4 13  9  2 14 99 17 11]
+Not in training classes: {np.int64(17)}
+Not in validation classes set()
+(256, 19407) (94, 19407)
+              precision    recall  f1-score   support
+
+           2       0.71      0.62      0.67        16
+           4       1.00      0.33      0.50         6
+           9       0.60      1.00      0.75         6
+          11       0.00      0.00      0.00         1
+          13       0.86      0.91      0.88        53
+          14       0.75      0.86      0.80         7
+          17       0.00      0.00      0.00         2
+          99       0.25      0.33      0.29         3
+
+    accuracy                           0.78        94
+   macro avg       0.52      0.51      0.49        94
+weighted avg       0.77      0.78      0.76        94
+
+Train F1 Score:1.0, Train Precision:1.0, Train Recall: 1.0
+Validation F1 Score:0.4853893621668851, Validation Precision:0.5214285714285715, Validation Recall: 0.5068087376460018
+**************************************************
+Fold1
+-3600 - 200
+-7400 - -3600
+-11200 - -7400
+-3600 - 200
+-7400 - -3600
+-11200 - -7400
+(286, 21420) (90, 21420)
+Unique Labels Training: 8
+Unique Labels Training Values [ 4 13  2 14 99  9 17 11]
+Unique Labels Validation: 6
+Unique Labels Validation Values [ 2 13 14  4 11 99]
+Not in training classes: set()
+Not in validation classes {np.int64(9), np.int64(17)}
+(286, 21420) (90, 21420)
+              precision    recall  f1-score   support
+
+           2       0.60      0.75      0.67         8
+           4       1.00      1.00      1.00         3
+          11       1.00      0.50      0.67         2
+          13       0.82      0.94      0.87        48
+          14       0.94      0.77      0.85        22
+          99       0.33      0.14      0.20         7
+
+    accuracy                           0.81        90
+   macro avg       0.78      0.68      0.71        90
+weighted avg       0.80      0.81      0.80        90
+
+Train F1 Score:1.0, Train Precision:1.0, Train Recall: 1.0
+Validation F1 Score:0.709519956850054, Validation Precision:0.7826599326599326, Validation Recall: 0.6838474025974026
+**************************************************
+Fold2
+-3600 - 200
+-7400 - -3600
+-11200 - -7400
+-3600 - 200
+-7400 - -3600
+-11200 - -7400
+(260, 19169) (75, 19169)
+Unique Labels Training: 7
+Unique Labels Training Values [ 4 13  2 99 14  9 11]
+Unique Labels Validation: 7
+Unique Labels Validation Values [ 2 13  4 14 99 11 17]
+Not in training classes: {np.int64(17)}
+Not in validation classes {np.int64(9)}
+(260, 19169) (75, 19169)
+              precision    recall  f1-score   support
+
+           2       0.82      0.75      0.78        12
+           4       0.60      1.00      0.75         3
+          11       0.50      0.67      0.57         3
+          13       0.82      0.89      0.85        35
+          14       0.88      0.94      0.91        16
+          17       0.00      0.00      0.00         1
+          99       0.00      0.00      0.00         5
+
+    accuracy                           0.80        75
+   macro avg       0.52      0.61      0.55        75
+weighted avg       0.74      0.80      0.77        75
+
+Train F1 Score:1.0, Train Precision:1.0, Train Recall: 1.0
+Validation F1 Score:0.5517776063806864, Validation Precision:0.5166177475774999, Validation Recall: 0.6056972789115646
+**************************************************
+Fold3
+-3600 - 200
+-7400 - -3600
+-11200 - -7400
+-3600 - 200
+-7400 - -3600
+-11200 - -7400
+(266, 20969) (66, 20969)
+Unique Labels Training: 8
+Unique Labels Training Values [ 4 13 99 14  2  9 17 11]
+Unique Labels Validation: 5
+Unique Labels Validation Values [ 2 13  4 14 11]
+Not in training classes: set()
+Not in validation classes {np.int64(9), np.int64(99), np.int64(17)}
+(266, 20969) (66, 20969)
+              precision    recall  f1-score   support
+
+           2       0.60      0.82      0.69        11
+           4       0.80      0.40      0.53        10
+          11       1.00      0.50      0.67         2
+          13       0.89      0.97      0.93        32
+          14       1.00      0.55      0.71        11
+          99       0.00      0.00      0.00         0
+
+    accuracy                           0.77        66
+   macro avg       0.71      0.54      0.59        66
+weighted avg       0.85      0.77      0.78        66
+
+Train F1 Score:1.0, Train Precision:1.0, Train Recall: 1.0
+Validation F1 Score:0.5872605299295378, Validation Precision:0.7142857142857143, Validation Recall: 0.5387310606060606
+**************************************************
+*************** Final Summary ***************
+average training precision:1.0
+average training recall:1.0
+average training f1:1.0
+average validation precision:0.6337479914879296
+average validation recall:0.5837711199402573
+average validation f1:0.5834868638317908

@@ -1,0 +1,138 @@
+(1011, 11)
+Unique Labels Training: 8
+Unique Labels Training Values [ 2  9 13 14  4 99 11 17]
+Unique Labels Validation: 8
+Unique Labels Validation Values [ 4 13 14  2 99  9 11 17]
+Not in training classes: set()
+Not in validation classes set()
+(779, 54554) (194, 54554)
+Fold0
+              precision    recall  f1-score   support
+
+           2       0.88      0.88      0.88        24
+           4       0.93      0.93      0.93        14
+           9       0.92      1.00      0.96        24
+          11       1.00      0.67      0.80         3
+          13       0.94      0.92      0.93        64
+          14       1.00      0.97      0.98        29
+          17       1.00      1.00      1.00         1
+          99       0.94      0.97      0.96        35
+
+    accuracy                           0.94       194
+   macro avg       0.95      0.92      0.93       194
+weighted avg       0.94      0.94      0.94       194
+
+Train F1 Score:0.9972703461769068, Train Precision:0.99609375, Train Recall: 0.9985177865612649
+Validation F1 Score:0.9291134882579077, Validation Precision:0.9509500915750916, Validation Recall: 0.9161323635057471
+**************************************************
+Unique Labels Training: 8
+Unique Labels Training Values [ 4 13 14  2 11 99  9 17]
+Unique Labels Validation: 8
+Unique Labels Validation Values [ 2  9 13 14  4 99 11 17]
+Not in training classes: set()
+Not in validation classes set()
+(776, 57051) (197, 57051)
+Fold1
+              precision    recall  f1-score   support
+
+           2       0.86      0.79      0.83        24
+           4       1.00      1.00      1.00        16
+           9       1.00      1.00      1.00        24
+          11       1.00      1.00      1.00         5
+          13       0.92      0.95      0.94        63
+          14       1.00      1.00      1.00        30
+          17       1.00      1.00      1.00         2
+          99       1.00      1.00      1.00        33
+
+    accuracy                           0.96       197
+   macro avg       0.97      0.97      0.97       197
+weighted avg       0.96      0.96      0.96       197
+
+Train F1 Score:0.9894522570726736, Train Precision:0.9910752606835955, Train Recall: 0.9882565707225718
+Validation F1 Score:0.9704483695652174, Validation Precision:0.9733391608391608, Validation Recall: 0.9680059523809523
+**************************************************
+Unique Labels Training: 8
+Unique Labels Training Values [ 4 13 14  2 11 99  9 17]
+Unique Labels Validation: 8
+Unique Labels Validation Values [ 2  9 14  4 13 11 99 17]
+Not in training classes: set()
+Not in validation classes set()
+(774, 52314) (196, 52314)
+Fold2
+              precision    recall  f1-score   support
+
+           2       0.92      0.92      0.92        24
+           4       1.00      1.00      1.00        15
+           9       0.92      1.00      0.96        23
+          11       0.80      0.80      0.80         5
+          13       0.97      0.94      0.95        63
+          14       1.00      1.00      1.00        30
+          17       1.00      1.00      1.00         1
+          99       0.97      0.97      0.97        35
+
+    accuracy                           0.96       196
+   macro avg       0.95      0.95      0.95       196
+weighted avg       0.96      0.96      0.96       196
+
+Train F1 Score:0.9966391378290691, Train Precision:0.9964342948717948, Train Recall: 0.9968971039636995
+Validation F1 Score:0.9497551843317973, Validation Precision:0.9469135441061671, Validation Recall: 0.9530753968253969
+**************************************************
+Unique Labels Training: 8
+Unique Labels Training Values [ 4 13 14  2 11 99  9 17]
+Unique Labels Validation: 8
+Unique Labels Validation Values [ 2  9 13 14  4 99 17 11]
+Not in training classes: set()
+Not in validation classes set()
+(786, 56793) (190, 56793)
+Fold3
+              precision    recall  f1-score   support
+
+           2       0.86      0.75      0.80        24
+           4       0.88      0.93      0.90        15
+           9       0.95      0.91      0.93        23
+          11       1.00      0.80      0.89         5
+          13       0.89      0.94      0.91        63
+          14       0.96      0.92      0.94        25
+          17       1.00      1.00      1.00         1
+          99       0.94      1.00      0.97        34
+
+    accuracy                           0.92       190
+   macro avg       0.94      0.91      0.92       190
+weighted avg       0.92      0.92      0.91       190
+
+Train F1 Score:0.9904207728108925, Train Precision:0.9919138190414787, Train Recall: 0.989315796557819
+Validation F1 Score:0.9187975990596289, Validation Precision:0.9354256854256855, Validation Recall: 0.9066105935127674
+**************************************************
+Unique Labels Training: 8
+Unique Labels Training Values [ 4 13 14  2 11 99  9 17]
+Unique Labels Validation: 8
+Unique Labels Validation Values [ 9 99 13  2 17 14  4 11]
+Not in training classes: set()
+Not in validation classes set()
+(779, 58623) (195, 58623)
+Fold4
+              precision    recall  f1-score   support
+
+           2       0.81      0.74      0.77        23
+           4       0.92      0.86      0.89        14
+           9       0.92      1.00      0.96        23
+          11       1.00      0.80      0.89         5
+          13       0.87      0.94      0.90        64
+          14       1.00      0.93      0.96        29
+          17       1.00      0.50      0.67         2
+          99       0.91      0.91      0.91        35
+
+    accuracy                           0.90       195
+   macro avg       0.93      0.83      0.87       195
+weighted avg       0.90      0.90      0.90       195
+
+Train F1 Score:0.9932719281159887, Train Precision:0.9948979591836735, Train Recall: 0.9919388391928438
+Validation F1 Score:0.869541514771778, Validation Precision:0.9295564580347189, Validation Recall: 0.8348866861212251
+**************************************************
+*************** Final Summary ***************
+average training precision:0.9940830167561086
+average training recall:0.9929852193996398
+average training f1:0.9934108884011061
+average validation precision:0.9472369879961647
+average validation recall:0.9157421984692178
+average validation f1:0.9275312311972659
